@@ -16,7 +16,7 @@ public class Neuron {
     private double net;
     //误差
     private double error;
-    //权值修正参数
+    //权值修正参数（偏差）
     private double err;
     //激活函数类型
     private int activationType;
@@ -80,7 +80,50 @@ public class Neuron {
     public void setActivationType(int type){
         activationType = type;
     }
+    /**
+     * 计算当前神经元的输入信号权值和
+     * @param previousLayer 上一层神经元
+     */
     public void calculateNet(Layer previousLayer){
-    	
+    	net=0.0;
+    	for(int i=0;i<previousLayer.getLength();i++){
+    		net+=(previousLayer.getNeuron(i).getOutput()*weights[i]);
+    	}
+    	net+=biasWeight;
+    }
+    /**
+     * 计算输出层神经元的误差值以及权值修正参数（偏差值）
+     * @param desiredOutput 期望响应参数
+     */
+    public void calculateError(double desiredOutput){
+    	error=desiredOutput-output;
+    	err=(desiredOutput-output)*derivatedActivationFunction();
+    }
+    /**
+     *计算隐藏层神经元的 权值修正参数（偏差值）
+     * @param nextLayer 下一层神经元
+     * @param index     当前神经元
+     */
+    public void calculateError(Layer nextLayer,int index){
+    	err=0.0;
+    	for(int i=0;i<nextLayer.getLength();i++){
+    		err+=(nextLayer.getNeuron(i).getErr()*nextLayer.getNeuron(i).getWeight(index));
+    	}
+    	err=derivatedActivationFunction()*err;
+    }
+    public double derivatedActivationFunction(){
+    	double derivated = 0.0;
+        double out = output;
+         switch (activationType){
+            case LINEAR_ACTIVATION:
+                derivated = 1; break;
+            case BINARY_SIGMOID_ACTIVATION:
+                derivated = flatness * out * (1 - out); break;
+            case BIPOLARY_SIGMOID_ACTIVATION:
+                derivated = flatness * (1 - Math.pow (out, 2)) ; break;
+            default:
+                derivated = 0;
+        }
+        return derivated;
     }
 }
