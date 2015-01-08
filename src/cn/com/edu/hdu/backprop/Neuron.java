@@ -3,9 +3,10 @@ import cn.com.edu.hdu.backprop.Layer;
 /**
  *神经网络中的基本单元---神经元
  *包含了神经元的所有信息包括：连接权值、偏置、输出信号、输入信息权值和
- *误差、权值修正参数、激活函数类型 
- *@author Administrator
- *ModifiedDate:2015/1/8
+ *误差、权值修正参数、激活函数类型 <br/> <br/>
+ *<b>ModifiedDate:</b><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ *2015/1/8
+ *@author Administrator<br/>
  *@version 0.1
  */
 public class Neuron {
@@ -87,10 +88,10 @@ public class Neuron {
      */
     public void calculateError(double desiredOutput){
     	error=desiredOutput-output;
-    	err=(desiredOutput-output)*derivatedActivationFunction();
+    	err=error*derivatedActivationFunction();
     }
     /**
-     *计算隐藏层神经元的 权值修正参数（偏差值）
+     *计算隐藏层神经元的权值修正参数（偏差值）
      * @param nextLayer 下一层神经元
      * @param index     当前神经元
      */
