@@ -23,4 +23,15 @@ public class Pattern {
 	public int getLength(){
 		return (in==null?0:in.length);
 	}
+	public String toString(){
+		String tmp="训练数据:";
+		for(int i=0;i<in.length;i++){
+			tmp+=in[i]+", ";
+		}
+		tmp+="|期望响应:";
+		for(int i=0;i<out.length;i++){
+			tmp+=out[i]+", ";
+		}
+		return tmp;
+	}
 }
