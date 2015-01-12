@@ -1,4 +1,6 @@
 package cn.com.edu.hdu.backprop;
+
+
 /**
  *神经网络结构框架---
  *包含了所有神经元的神经网络结构 <br/> <br/>
@@ -17,8 +19,9 @@ public class Net {
 	//根据输入信息构造神经网络
 	public Net(Layer[] layers,double learningRate){
 		this.layers=new Layer[layers.length];
+		this.learningRate=learningRate;
 		for(int i=0;i<layers.length;i++){
-			this.layers[i]=new Layer(layers[i]);
+			this.layers[i] = (layers[i] != null) ? new Layer(layers[i]) : null; 
 		}
 	}
 	/**
@@ -26,7 +29,7 @@ public class Net {
 	 *@param patterns 训练数据集
 	 *@return double 输出的误差信息 
 	 */
-	public double trainModelForPatterns(Pattern []patterns){
+	public double trainModelFromPatterns(Pattern []patterns){
 		double err=Double.MIN_VALUE;
 		double trainErr;
 		for(int i=0;i<patterns.length;i++){
@@ -40,6 +43,29 @@ public class Net {
 		forwardPhase(pattern.getIn());
 		backwardPhase(pattern.getOut());
 		return calculateError();
+	}
+	/*
+	 *进行数据测试，使用训练 完成的模型进行数据模拟测试 
+	 * @param patterns 输入数据集 
+	 */
+	public void calculateResult(Pattern [] patterns){
+		if(patterns!=null)
+		for(int i=0;i<patterns.length;i++ ){
+			forwardPhase(patterns[i].getIn());
+			UtilFunc.FormatOutput("输入数据：", patterns[i].getIn());
+			UtilFunc.FormatOutput("期望输出：", patterns[i].getOut());
+			int leg=layers[layers.length-1].getNoOfNeurons();
+			double []out=new double[leg];
+			for(int j=0;j<leg;j++){
+				out[j]=layers[layers.length-1].getNeuron(j).getOutput();
+			}
+			UtilFunc.FormatOutput("实际输出：", out);
+			for(int x=0;x<layers[layers.length-1].getNoOfNeurons();x++)
+				layers[layers.length-1].getNeuron(x).calculateError(patterns[i].getOut()[x]);
+			System.out.println("\n误差："+calculateErr());
+			System.out.print("------------------------------------");
+		}
+		
 	}
 	/**
 	 * 信息正向传导
@@ -83,6 +109,13 @@ public class Net {
 	         err += Math.pow (layers[layers.length - 1].getNeuron (i).getError(), 2);
 	     }
 	     return (0.5 * err);
+	}
+	public double calculateErr(){
+		double err = 0.0;
+	     for (int i = 0; i < layers[layers.length - 1].getNoOfNeurons(); ++i){
+	         err+=layers[layers.length - 1].getNeuron (i).getError();
+	     }
+	     return err;
 	}
 	/**
 	 *输出当前神经网络的所有信息

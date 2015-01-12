@@ -43,8 +43,8 @@ public class Neuron {
         biasWeight = weightDefaultValue + ((0.5 - Math.random()) / 10);
         this.activationType = activationType;    
         output = 0.5; 
-        net = 0.0; 
-        error = 0.0;
+        net    = 0.0; 
+        error  = 0.0;
     }
     //复制现有神经元---深层复制
 	public Neuron(Neuron neuron){

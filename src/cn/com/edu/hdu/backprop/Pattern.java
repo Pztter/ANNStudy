@@ -28,7 +28,7 @@ public class Pattern {
 		for(int i=0;i<in.length;i++){
 			tmp+=in[i]+", ";
 		}
-		tmp+="|期望响应:";
+		tmp+="| 期望响应:";
 		for(int i=0;i<out.length;i++){
 			tmp+=out[i]+", ";
 		}

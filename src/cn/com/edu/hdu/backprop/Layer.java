@@ -1,4 +1,7 @@
 package cn.com.edu.hdu.backprop;
+
+
+
 /**
  *神经网络中的层次结构类型---层
  *包含了当前层中所有的神经元信息 <br/> <br/>
@@ -17,14 +20,18 @@ public class Layer {
 	 public Layer(int noOfNeurons, Layer previousLayer, double weightDefaultValue, int activationType) {
 		 neurons=new Neuron[noOfNeurons];
 		 for(int i=0;i<noOfNeurons;i++){
-			 neurons[i]=new Neuron(previousLayer.getNoOfNeurons(),weightDefaultValue,activationType);
+			 if(previousLayer!=null)
+				 neurons[i]=new Neuron(previousLayer.getNoOfNeurons(),weightDefaultValue,activationType);
+			 else
+				 neurons[i]=new Neuron(0,0,activationType);
 		 }
 	 }
 	 /**
 	  * 对输入层对象进行复制----深层复制
 	  */
 	public Layer(Layer layer){
-		for(int i=0;i<=layer.getLength();i++){
+		neurons = new Neuron[layer.getNoOfNeurons()];
+		for(int i=0;i<layer.getNoOfNeurons();i++){
 			neurons[i]=new Neuron(layer.getNeuron(i));
 		}
 	}
@@ -64,13 +71,13 @@ public class Layer {
 		this.neurons=neurons;
 	}
 	public int getLength(){
-		return neurons==null?0:neurons.length;
+		return neurons.length;
 	}
 	public int getNoOfNeurons(){
-		return neurons==null?0:neurons.length;
+		return neurons.length;
 	}
 	public Neuron getNeuron(int index){
-		return getLength()>index?neurons[index]:null;
-	}
+        return neurons[index];
+    }
 	////////////////////////////////////////////////////////////////
 }
